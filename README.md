@@ -1,0 +1,2 @@
+# bashconfig
+my bash custimization
