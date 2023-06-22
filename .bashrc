@@ -59,7 +59,7 @@ alias spico='sedit'
 alias nano='edit'
 alias snano='sedit'
 alias vim='nvim'
-alias cat='batcat'
+alias cat='bat'
 
 # To have colors for ls and all grep commands such as grep, egrep and zgrep
 export CLICOLOR=1
