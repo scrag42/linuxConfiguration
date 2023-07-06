@@ -59,7 +59,7 @@ alias spico='sedit'
 alias nano='edit'
 alias snano='sedit'
 alias vim='nvim'
-alias cat='bat'
+alias cat='batcat'
 
 # To have colors for ls and all grep commands such as grep, egrep and zgrep
 export CLICOLOR=1
@@ -201,7 +201,7 @@ alias clickpaste='sleep 3; xdotool type "$(xclip -o -selection clipboard)"'
 alias kssh="kitty +kitten ssh"
 
 # Flatpak Alias's
-alias code="flatpak run com.visualstudio.code"
+# alias code="flatpak run com.visualstudio.code"
 alias steam="flatpak run com.valvesoftware.Steam"
 alias brave="com.brave.Browser"
 alias discord="flatpak run com.discordapp.Discord"
