@@ -69,7 +69,9 @@ configureKitty() {
 
 mountNetworkDrives() {
     if [ -e "/etc/fstab" ]; then
+        read -p "Enter the IP address of the NAS: " NASIP
         SHARES="NetworkStorage SharedFiles PhotoSync"
+        sudo cp /etc/fstab /etc/fstab.bak
         for share in ${SHARES}; do
             if [ -d "/mnt/${share}" ]; then
                 if [ -z "$(ls -A /mnt/${share})" ]; then
@@ -81,9 +83,15 @@ mountNetworkDrives() {
             else
                 sudo mkdir /mnt/${share}
             fi
-            echo "${share} /mnt/${share} nfs vers=3,_netdev 0 0" | sudo tee -a /etc/fstab
+            echo "${NASIP}:/mnt/user/${share} /mnt/${share} nfs vers=3,_netdev 0 0" | sudo tee -a /etc/fstab
         done
         sudo mount -a
+        if [ $? -eq 0 ]; then
+            echo -e "${GREEN} Network drives mounted successfully"
+        else
+            echo -e "${RED} Failed to mount network drives. Reverting fstab file. Please manually mount drives."
+            sudo mv /etc/fstab.bak /etc/fstab
+        fi
     else
         echo -e "${RED} Cannot find fstab file. Manually add network drives"
     fi
