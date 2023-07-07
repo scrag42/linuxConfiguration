@@ -40,10 +40,10 @@ installPackages() {
         fi
         YAY_DEPENDENCIES='nfs-utils'
     	yay --noconfirm -S ${DEPENDENCIES} ${YAY_DEPENDENCIES}
-    else if [[ $PACKAGER == "apt" ]]; then
+    elif [[ $PACKAGER == "apt" ]]; then
         APT_DEPENDENCIES='nala nfs-common'
         sudo ${PACKAGER} install -yq ${DEPENDENCIES} ${APT_DEPENDENCIES}
-    else if [[ $PACKAGER == "dnf" ]]; then
+    elif [[ $PACKAGER == "dnf" ]]; then
         DNF_DEPENDENCIES='nfs-utils'
         sudo ${PACKAGER} install -yq ${DEPENDENCIES} ${DNF_DEPENDENCIES}
     fi
@@ -54,7 +54,7 @@ installFlatpaks() {
 	if ! command_exists flatpak; then
         	echo -e "${RED}To run me, you need: flatpak"
         	exit 1
-    	fi
+    fi
 	flatpak install -y flathub ${FLATHUB}
 }
 
@@ -94,14 +94,37 @@ yesno() {
     if [[ $answer == "y" || $answer == "Y" ]]; then
         $2
     elif [[ $answer == "n" || $answer == "N" ]]; then
-        echo -e "${Yellow}Skipping step..."
+        echo -e "${Yellow} Skipping step..."
     else
         yesno "$1" "$2" 
     fi
 }
 
+installSid() {
+    if [[ $(cat /etc/os-release | grep -w ID) == *"debian"* ]]; then
+        echo -e "${YELLOW} Debian system detected. Updating to Sid can provide better hardware support for newer hardware and updated packages. Please note that this may break your system, speicifally NVIDIA drivers if a new kernel is installed. Please backup your system before continuing."
+        yesno "Do you want to install Sid? (y/n): " updateAptSources
+        sudo apt update && sudo apt upgrade -y
+    else
+        echo -e "${YELLOW} Not Debian. Skipping step..."
+    fi
+}
+
+updateAptSources() {
+    echo "deb http://deb.debian.org/debian/ sid main non-free-firmware contrib non-free" | sudo tee /etc/apt/sources.list
+    echo "deb-src http://deb.debian.org/debian/ sid main non-free-firmware contrib non-free" | sudo tee -a /etc/apt/sources.list
+}
+
+rebootSafe() {
+    echo -e "${GREEN} Rebooting in 5 seconds..."
+    sleep 5
+    sudo reboot
+}
+
 setEnv
+installSid
 installPackages
 installFlatpaks
 configureKitty
 yesno "Do you want to mount the Network Drives? (y/n): " mountNetworkDrives
+yesno "Reboot required. If kernel was updated please note that NVIDIA drivers may need reinstalled. If a blank screen occurs after reboot enter TTY (CTRL + ALT + F3) to reinstall NVIDIA driver. Reboot now? (y/n): " rebootSafe
