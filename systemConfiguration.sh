@@ -28,7 +28,7 @@ command_exists () {
 
 installPackages() {
     ## Check for dependencies.
-    DEPENDENCIES='kitty bat gnome-tweaks'
+    DEPENDENCIES='kitty bat'
     echo -e "${YELLOW}Installing dependencies...${RC}"
     if [[ $PACKAGER == "pacman" ]]; then
         if ! command_exists yay; then
