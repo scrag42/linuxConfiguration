@@ -50,7 +50,7 @@ installPackages() {
 }
 
 installFlatpaks() {
-	FLATHUB="com.discordapp.Discord com.brave.Browser com.spotify.Client com.github.tchx84.Flatseal com.parsecgaming.parsec com.valvesoftware.Steam net.davidotek.pupgui2"
+	FLATHUB="com.discordapp.Discord com.brave.Browser com.spotify.Client com.github.tchx84.Flatseal com.moonlight_stream.Moonlight com.valvesoftware.Steam net.davidotek.pupgui2"
 	if ! command_exists flatpak; then
         	echo -e "${RED}To run me, you need: flatpak"
         	exit 1
