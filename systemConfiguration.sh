@@ -52,9 +52,14 @@ installPackages() {
 installFlatpaks() {
 	FLATHUB="com.discordapp.Discord com.brave.Browser com.spotify.Client com.github.tchx84.Flatseal com.moonlight_stream.Moonlight com.valvesoftware.Steam net.davidotek.pupgui2"
 	if ! command_exists flatpak; then
-        	echo -e "${RED}To run me, you need: flatpak"
-        	exit 1
-    fi
+        	echo -e "${YELLOW}Flatpak not installed. Installing Flatpak..."
+	 	if [[ $PACKAGER == "pacman" ]]; then
+        		sudo ${PACKAGER} --noconfirm install flatpak
+	  	else
+    			sudo ${PACKAGER} install -yq flatpak
+       		fi
+   	fi
+    	flatpak remote-add --if-not-exists flathub https://dl.flathub.org/repo/flathub.flatpakrepo
 	flatpak install -y flathub ${FLATHUB}
 }
 
