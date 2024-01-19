@@ -31,15 +31,7 @@ installPackages() {
     DEPENDENCIES='kitty bat'
     echo -e "${YELLOW}Installing dependencies...${RC}"
     if [[ $PACKAGER == "pacman" ]]; then
-        if ! command_exists yay; then
-            echo "Installing yay..."
-            sudo ${PACKAGER} --noconfirm -S base-devel
-            $(cd /opt && sudo git clone https://aur.archlinux.org/yay-git.git && sudo chown -R ${USER}:${USER} ./yay-git && cd yay-git && makepkg --noconfirm -si)
-        else
-            echo "Command yay already installed"
-        fi
-        YAY_DEPENDENCIES='nfs-utils'
-    	yay --noconfirm -S ${DEPENDENCIES} ${YAY_DEPENDENCIES}
+        sudo packma -S nfs-utils timeshift ${DEPENDENCIES} --noconfirm
     elif [[ $PACKAGER == "apt" ]]; then
         APT_DEPENDENCIES='nala nfs-common'
         sudo ${PACKAGER} install -yq ${DEPENDENCIES} ${APT_DEPENDENCIES}
