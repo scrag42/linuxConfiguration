@@ -28,7 +28,7 @@ command_exists () {
 
 installPackages() {
     ## Check for dependencies.
-    DEPENDENCIES='kitty bat'
+    DEPENDENCIES='kitty'
     echo -e "${YELLOW}Installing dependencies...${RC}"
     if [[ $PACKAGER == "pacman" ]]; then
         sudo packma -S nfs-utils timeshift ${DEPENDENCIES} --noconfirm
@@ -41,8 +41,9 @@ installPackages() {
     fi
 }
 
+# net.davidotek.pupgui2 is ProtonUp-Qt
 installFlatpaks() {
-	FLATHUB="com.discordapp.Discord com.brave.Browser com.spotify.Client com.github.tchx84.Flatseal com.moonlight_stream.Moonlight com.valvesoftware.Steam net.davidotek.pupgui2"
+	FLATHUB="com.discordapp.Discord com.spotify.Client com.github.tchx84.Flatseal com.moonlight_stream.Moonlight com.valvesoftware.Steam net.davidotek.pupgui2"
 	if ! command_exists flatpak; then
         	echo -e "${YELLOW}Flatpak not installed. Installing Flatpak..."
 	 	if [[ $PACKAGER == "pacman" ]]; then
@@ -61,36 +62,6 @@ configureKitty() {
         cp ${GITPATH}/kitty.conf ${HOME}/.config/kitty/kitty.conf
     else
         echo -e "${RED} Cannot find kitty config file."
-    fi
-}
-
-mountNetworkDrives() {
-    if [ -e "/etc/fstab" ]; then
-        read -p "Enter the IP address of the NAS: " NASIP
-        SHARES="NetworkStorage SharedFiles PhotoSync"
-        sudo cp /etc/fstab /etc/fstab.bak
-        for share in ${SHARES}; do
-            if [ -d "/mnt/${share}" ]; then
-                if [ -z "$(ls -A /mnt/${share})" ]; then
-                    echo "Directory /mnt/${share} is empty"
-                else
-                    echo -e "${RED} Directory /mnt/${share} is not empty and will not be mounted."
-                    continue
-                fi
-            else
-                sudo mkdir /mnt/${share}
-            fi
-            echo "${NASIP}:/mnt/user/${share} /mnt/${share} nfs vers=3,_netdev 0 0" | sudo tee -a /etc/fstab
-        done
-        sudo mount -a
-        if [ $? -eq 0 ]; then
-            echo -e "${GREEN} Network drives mounted successfully"
-        else
-            echo -e "${RED} Failed to mount network drives. Reverting fstab file. Please manually mount drives."
-            sudo mv /etc/fstab.bak /etc/fstab
-        fi
-    else
-        echo -e "${RED} Cannot find fstab file. Manually add network drives"
     fi
 }
 
@@ -131,5 +102,4 @@ installSid
 installPackages
 installFlatpaks
 configureKitty
-yesno "Do you want to mount the Network Drives? (y/n): " mountNetworkDrives
 yesno "Reboot required. If kernel was updated please note that NVIDIA drivers may need reinstalled. If a blank screen occurs after reboot enter TTY (CTRL + ALT + F3) to reinstall NVIDIA driver. Reboot now? (y/n): " rebootSafe
