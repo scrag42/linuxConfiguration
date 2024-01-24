@@ -88,7 +88,6 @@ alias kssh="kitty +kitten ssh"
 # Flatpak Alias's
 # alias code="flatpak run com.visualstudio.code"
 alias steam="flatpak run com.valvesoftware.Steam"
-alias brave="com.brave.Browser"
 alias discord="flatpak run com.discordapp.Discord"
 
 #######################################################
