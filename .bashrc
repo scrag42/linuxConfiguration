@@ -57,8 +57,6 @@ alias pico='edit'
 alias spico='sedit'
 alias nano='edit'
 alias snano='sedit'
-alias vim='nvim'
-alias cat='batcat'
 
 # To have colors for ls and all grep commands such as grep, egrep and zgrep
 export CLICOLOR=1
@@ -81,17 +79,8 @@ export LESS_TERMCAP_us=$'\E[01;32m'
 #######################################################
 
 # Alias's to modified commands
-alias cp='cp -i'
-alias mv='mv -i'
-alias rm='trash -v'
-alias mkdir='mkdir -p'
-alias ps='ps auxf'
-alias ping='ping -c 10'
-alias less='less -R'
-alias multitail='multitail --no-repeat -c'
 alias vi='nvim'
 alias vim='nvim'
-alias clickpaste='sleep 3; xdotool type "$(xclip -o -selection clipboard)"'
 
 # KITTY - alias to be able to use kitty features when connecting to remote servers(e.g use tmux on remote server)
 alias kssh="kitty +kitten ssh"
@@ -135,7 +124,6 @@ install_bashrc_support ()
 	fi
 }
 
-alias lookingglass="~/looking-glass-B5.0.1/client/build/looking-glass-client -F"
 #######################################################
 # Set the ultimate amazing command prompt
 #######################################################
