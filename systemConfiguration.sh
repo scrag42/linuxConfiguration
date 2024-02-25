@@ -31,7 +31,7 @@ installPackages() {
     DEPENDENCIES='kitty'
     echo -e "${YELLOW}Installing dependencies...${RC}"
     if [[ $PACKAGER == "pacman" ]]; then
-        sudo packma -S nfs-utils timeshift ${DEPENDENCIES} --noconfirm
+        sudo pacman -S nfs-utils timeshift ${DEPENDENCIES} --noconfirm
     elif [[ $PACKAGER == "apt" ]]; then
         APT_DEPENDENCIES='nala nfs-common'
         sudo ${PACKAGER} install -yq ${DEPENDENCIES} ${APT_DEPENDENCIES}
